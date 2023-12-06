@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vhireapp/screens/wrapper.dart';
 import 'package:vhireapp/services/authentication.dart';
 import 'package:vhireapp/shared/loading.dart';
 
@@ -108,6 +109,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       dynamic result = await _auth.signUp(_emailController.text, _passwordController.text);
                       if(result!=null) {
                         debugPrint(result.id);
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => const Wrapper()));
                       } else {
                         setState(() => loading = false );
                       }

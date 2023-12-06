@@ -1,6 +1,6 @@
 class AuthenticatedUser {
 
-  late String id;
+  final String id;
   late String? lastname;
   late String? firstname;
   late String? email;
@@ -18,4 +18,9 @@ class AuthenticatedUser {
     this.idcard,
     this.license_id
   });
+
+  // Function to update users informations
+  Future update({String? lastname, String? firstname, String? email, String? gender, String? idcard, String? license_id}) async {
+    // Nothing yet
+  }
 }

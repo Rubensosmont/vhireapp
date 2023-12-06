@@ -20,7 +20,10 @@ class _LoginPageState extends State<LoginPage> {
       child: Center(
         child: TextButton(
           child: const Text("Go to Sign Up Page ->"),
-          onPressed: () => Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => const SignUpPage())),
+          onPressed: () {
+            Navigator.pushReplacement(context, MaterialPageRoute(
+                builder: (BuildContext context) => const SignUpPage()) );
+          }
         ),
       ),
     );
