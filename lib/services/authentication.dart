@@ -17,10 +17,15 @@ class AuthService {
   }
 
   // Sign in with email and password function
-  Future signIn() async {
-    // Onésime, put your f*cking signIn function here
-    // Uses the _auth attribute of this class
-    // Follow my model if u want !
+  Future signIn(String email, String password) async {
+    try {
+      UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
+      User user = result.user!;
+      return _authenticatedUserFromUser(user);
+    } catch(e) {
+      debugPrint(e.toString());
+      return null;
+    }
   }
 
   // Sign up with email and password function
