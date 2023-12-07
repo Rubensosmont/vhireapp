@@ -84,10 +84,12 @@ class _LoginSteps0State extends State<LoginSteps0> {
 
                                 ElevatedButton(
                                   onPressed: () {
+    if (formKey.currentState!.validate()) {
+      Navigator.push(context, MaterialPageRoute(builder: (context) => LoginSteps1()),
 
-                                    Navigator.push(context, MaterialPageRoute(builder: (context) => LoginSteps1()),
+      );
+    }
 
-                                    );
                                   }
                                   ,
                                   child: Text("Suivant"),
