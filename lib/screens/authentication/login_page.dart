@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:vhireapp/screens/authentication/signup_page.dart';
 import 'package:vhireapp/services/authentication.dart';
 import 'package:vhireapp/shared/loading.dart';
+import 'pwd_forget.dart';
 
 import '../wrapper.dart';
 
@@ -130,6 +131,27 @@ class _LoginPageState extends State<LoginPage> {
                             fontSize: 18,),
                         ),
                       ),
+                    ),
+                  ),
+                ),
+
+                SizedBox(
+                  height: 10,
+                ),
+                GestureDetector(
+                  onTap: () {
+                    Navigator.push(
+                      context,
+                      MaterialPageRoute(
+                          builder: (context) => PasswordForgetPage()),
+                    );
+                  },
+                  child: Text(
+                    "Mot de passe oublié ?",
+                    style: TextStyle(
+                      color: Colors.blue,
+                      fontWeight: FontWeight.bold,
+                      decoration: TextDecoration.underline,
                     ),
                   ),
                 ),
