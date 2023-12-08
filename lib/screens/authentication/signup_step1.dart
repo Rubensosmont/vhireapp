@@ -1,8 +1,4 @@
 import 'package:flutter/material.dart';
-import 'package:vhireapp/screens/authentication/signup_page.dart';
-import 'package:vhireapp/screens/authentication/signup_step0.dart';
-
-import 'login_step1.dart';
 
 class SignupStep1 extends StatefulWidget {
   const SignupStep1({super.key});
@@ -12,7 +8,7 @@ class SignupStep1 extends StatefulWidget {
 }
 
 class _SignupStep1State extends State<SignupStep1> {
-  final formKey = GlobalKey<FormState>();
+  final  GlobalKey<FormState> formKey = GlobalKey<FormState>();
   String? _sexe;
   @override
   Widget build(BuildContext context) {
@@ -26,8 +22,8 @@ class _SignupStep1State extends State<SignupStep1> {
 
           children: <Widget>[
             Expanded(child:  IconButton(onPressed:  (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SignupStep0()));
-            }, icon: Icon(Icons.arrow_back,color: Colors.black,size: 30,),alignment: Alignment.topLeft,))
+              // This is useless //Navigator.push(context, MaterialPageRoute(builder: (context) => SignupStep0()));
+            }, icon: const Icon(Icons.arrow_back,color: Colors.black,size: 30,),alignment: Alignment.topLeft,))
 
           ],
         ),
@@ -38,24 +34,24 @@ class _SignupStep1State extends State<SignupStep1> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center ,
             children: [
-              Padding(padding: EdgeInsets.only(left: 30.0),
+              Padding(padding: const EdgeInsets.only(left: 30.0),
                 child: Image.asset("assets/images/vhire.png",height: 200,),
               ),
-          SizedBox(height: 15,),
+          const SizedBox(height: 15,),
           //Welcome section
-          Text("inscription",
+          const Text("inscription",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 36,
                 color: Color(0xFF5371E9)
             ),
           ),
-          SizedBox(height:10,),
-          Text('Entrer vos informations',
+          const SizedBox(height:10,),
+          const Text('Entrer vos informations',
             style: TextStyle(
                 fontSize: 18),
           ),
-              SizedBox(height: 15,),
+              const SizedBox(height: 15,),
           Form(
               key: formKey,
               child: Column(
@@ -87,7 +83,7 @@ class _SignupStep1State extends State<SignupStep1> {
                   ),
                 ),
               ),
-              SizedBox(height: 15,),
+              const SizedBox(height: 15,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: Container(
@@ -114,7 +110,7 @@ class _SignupStep1State extends State<SignupStep1> {
                   ),
                 ),
               ),
-        SizedBox(height: 15,),
+              const SizedBox(height: 15,),
         Padding(
           padding: const EdgeInsets.symmetric(horizontal: 25.0),
           child: Container(
@@ -126,8 +122,8 @@ class _SignupStep1State extends State<SignupStep1> {
             ),
             child: Padding(
               padding: const EdgeInsets.only(left: 20.0),
-              child:   DropdownButtonFormField(style :TextStyle(color: Colors.white
-              ),decoration: InputDecoration(
+              child:   DropdownButtonFormField(style :const TextStyle(color: Colors.white
+              ),decoration: const InputDecoration(
                 border: InputBorder.none,
                 hintText: 'Quel est votre sexe',
               ),
@@ -153,7 +149,7 @@ class _SignupStep1State extends State<SignupStep1> {
       ],
           )
           ),
-              SizedBox(height: 30,),
+              const SizedBox(height: 30,),
           // Email text field
               ElevatedButton(
                 onPressed: () {
@@ -178,10 +174,10 @@ class _SignupStep1State extends State<SignupStep1> {
 
                 }
                 ,
-                child: Text("Valider"),
+                child: const Text("Valider"),
                 style: ButtonStyle(
-                  backgroundColor:MaterialStateProperty.all(Color(0xFF5371E9)),
-                  fixedSize: MaterialStateProperty.all(Size.fromWidth(200)),
+                  backgroundColor:MaterialStateProperty.all(const Color(0xFF5371E9)),
+                  fixedSize: MaterialStateProperty.all(const Size.fromWidth(200)),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),

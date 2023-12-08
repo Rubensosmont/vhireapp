@@ -1,8 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vhireapp/screens/authentication/signup_page.dart';
 import 'package:vhireapp/screens/authentication/signup_step1.dart';
-
-import 'login_step1.dart';
 
 class SignupStep0 extends StatefulWidget {
   const SignupStep0({super.key});
@@ -12,9 +9,9 @@ class SignupStep0 extends StatefulWidget {
 }
 
 class _SignupStep0State extends State<SignupStep0> {
-  final formKey = GlobalKey<FormState>();
+  final GlobalKey<FormState> formKey = GlobalKey<FormState>();
 
-  final _nameController = TextEditingController();
+  final TextEditingController _nameController = TextEditingController();
   @override
   Widget build(BuildContext context) {
 
@@ -25,11 +22,10 @@ class _SignupStep0State extends State<SignupStep0> {
         elevation: 0,
         leading:   Row(
 
-          children: <Widget>[
+          children: [
             Expanded(child:  IconButton(onPressed:  (){
-              Navigator.push(context, MaterialPageRoute(builder: (context) => SignupStep0()));
-            }, icon: Icon(Icons.arrow_back,color: Colors.black,size: 30,),alignment: Alignment.topLeft,))
-
+              //This is useless //Navigator.push(context, MaterialPageRoute(builder: (context) => SignupStep0()));
+            }, icon: const Icon(Icons.arrow_back,color: Colors.black,size: 30,),alignment: Alignment.topLeft,))
           ],
         ),
       ),
@@ -38,25 +34,25 @@ class _SignupStep0State extends State<SignupStep0> {
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center ,
             children: [
-              Padding(padding: EdgeInsets.only(left: 30.0),
+              Padding(padding: const EdgeInsets.only(left: 30.0),
                 child: Image.asset("assets/images/vhire.png",height: 200,),
               ),
 
-          SizedBox(height: 75,),
+          const SizedBox(height: 75,),
           //Welcome section
-          Text("inscription",
+          const Text("inscription",
             style: TextStyle(
               fontWeight: FontWeight.bold,
               fontSize: 36,
                 color: Color(0xFF5371E9)
             ),
           ),
-          SizedBox(height:10,),
-          Text('Entrer vos informations',
+          const SizedBox(height:10,),
+          const Text('Entrer vos informations',
             style: TextStyle(
                 fontSize: 18),
           ),
-              SizedBox(height: 30,),
+              const SizedBox(height: 30,),
           Form(
               key: formKey,
               child: Column(
@@ -88,7 +84,7 @@ class _SignupStep0State extends State<SignupStep0> {
                   ),
                 ),
               ),
-              SizedBox(height: 30,),
+              const SizedBox(height: 30,),
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: Container(
@@ -119,7 +115,7 @@ class _SignupStep0State extends State<SignupStep0> {
             ],
           )
           ),
-              SizedBox(height: 30,),
+              const SizedBox(height: 30,),
           // Email text field
               ElevatedButton(
                 onPressed: () {
@@ -131,10 +127,10 @@ class _SignupStep0State extends State<SignupStep0> {
 
                 }
                 ,
-                child: Text("Suivant"),
+                child: const Text("Suivant"),
                 style: ButtonStyle(
-                  backgroundColor:MaterialStateProperty.all(Color(0xFF5371E9)),
-                  fixedSize: MaterialStateProperty.all(Size.fromWidth(200)),
+                  backgroundColor:MaterialStateProperty.all(const Color(0xFF5371E9)),
+                  fixedSize: MaterialStateProperty.all(const Size.fromWidth(200)),
                   shape: MaterialStateProperty.all<RoundedRectangleBorder>(
                     RoundedRectangleBorder(
                       borderRadius: BorderRadius.circular(10.0),

@@ -2,9 +2,8 @@ import 'package:flutter/material.dart';
 import 'package:vhireapp/screens/authentication/signup_page.dart';
 import 'package:vhireapp/services/authentication.dart';
 import 'package:vhireapp/shared/loading.dart';
-import 'pwd_forget.dart';
-
-import '../wrapper.dart';
+import 'package:vhireapp/screens/wrapper.dart';
+import 'package:vhireapp/screens/authentication/password_forget_page.dart';
 
 class LoginPage extends StatefulWidget {
   const LoginPage({super.key});
@@ -18,9 +17,10 @@ class _LoginPageState extends State<LoginPage> {
   final AuthService _auth = AuthService();
   bool loading = false;
 
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
+  @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
@@ -37,24 +37,12 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center ,
               children: [
-                Icon(Icons.car_repair,
-                  size: 100,),
-                SizedBox(height: 75,),
-                //Welcome section
-                Text("Bienvenue !",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 36,
-                  ),
-                ),
-                SizedBox(height:10,),
-                Text('Connectez vous',
-                  style: TextStyle(
-                      fontSize: 18),
-                ),
-
-                // Email text field
-                SizedBox(height: 50,),
+                const Icon(Icons.car_repair, size: 100,),
+                const SizedBox(height: 75,),
+                const Text("Bienvenue !", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36)),
+                const SizedBox(height:10,),
+                const Text('Connectez vous', style: TextStyle(fontSize: 18)),
+                const SizedBox(height: 50,),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Container(
@@ -62,7 +50,6 @@ class _LoginPageState extends State<LoginPage> {
                       color: Colors.grey[200],
                       border: Border.all(color: Colors.white),
                       borderRadius: BorderRadius.circular(12),
-
                     ),
                     child: Padding(
                       padding: const EdgeInsets.only(left: 20.0),
@@ -80,7 +67,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 // Password text field
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Container(
@@ -94,7 +81,7 @@ class _LoginPageState extends State<LoginPage> {
                       child: TextField(
                         controller: _passwordController,
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Mot de passe',
                         ),
@@ -104,7 +91,7 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 // Login Button
-                SizedBox(height: 10,),
+                const SizedBox(height: 10),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: GestureDetector(
@@ -119,10 +106,10 @@ class _LoginPageState extends State<LoginPage> {
                       }
                     },
                     child: Container(
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration( color: Colors.deepPurple,
                           borderRadius: BorderRadius.circular(12)),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           "Se connecter",
                           style: TextStyle(
@@ -135,18 +122,16 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
-                SizedBox(
+                const SizedBox(
                   height: 10,
                 ),
                 GestureDetector(
                   onTap: () {
-                    Navigator.push(
-                      context,
-                      MaterialPageRoute(
-                          builder: (context) => PasswordForgetPage()),
+                    Navigator.push(context, MaterialPageRoute(
+                          builder: (BuildContext context) => PasswordForgetPage()),
                     );
                   },
-                  child: Text(
+                  child: const Text(
                     "Mot de passe oublié ?",
                     style: TextStyle(
                       color: Colors.blue,
@@ -157,16 +142,16 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 //Registration page link here
-                SizedBox(height: 25,),
+                const SizedBox(height: 25,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Vous n'avez pas de compte?"),
+                    const Text("Vous n'avez pas de compte?"),
                     GestureDetector(
                       onTap: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => SignUpPage()));
                       } ,
-                      child: Text("Inscrivez vous!",
+                      child: const Text("Inscrivez vous!",
                         style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold),

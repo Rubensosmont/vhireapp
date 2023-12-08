@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:vhireapp/screens/wrapper.dart';
+import 'package:vhireapp/screens/authentication/login_page.dart';
+import 'package:vhireapp/screens/authentication/signup_step0.dart';
 import 'package:vhireapp/services/authentication.dart';
 import 'package:vhireapp/shared/loading.dart';
 
@@ -15,9 +16,10 @@ class _SignUpPageState extends State<SignUpPage> {
   final AuthService _auth = AuthService();
   bool loading = false;
 
-  final _emailController = TextEditingController();
-  final _passwordController = TextEditingController();
+  final TextEditingController _emailController = TextEditingController();
+  final TextEditingController _passwordController = TextEditingController();
 
+  @override
   void dispose() {
     _emailController.dispose();
     _passwordController.dispose();
@@ -33,24 +35,14 @@ class _SignUpPageState extends State<SignUpPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center ,
               children: [
-                Icon(Icons.car_repair,
-                  size: 100,),
-                SizedBox(height: 75,),
-                //Welcome section
-                Text("Bienvenue !",
-                  style: TextStyle(
-                    fontWeight: FontWeight.bold,
-                    fontSize: 36,
-                  ),
-                ),
-                SizedBox(height:10,),
-                Text('Connectez vous',
-                  style: TextStyle(
-                      fontSize: 18),
-                ),
+                const Icon(Icons.car_repair, size: 100,),
+                const SizedBox(height: 75,),
+                const Text("Bienvenue !", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36)),
+                const SizedBox(height: 10),
+                const Text('Inscrivez vous', style: TextStyle(fontSize: 18)),
 
                 // Email text field
-                SizedBox(height: 50,),
+                const SizedBox(height: 50,),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Container(
@@ -76,7 +68,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
 
                 // Password text field
-                SizedBox(height: 20,),
+                const SizedBox(height: 20,),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: Container(
@@ -90,7 +82,7 @@ class _SignUpPageState extends State<SignUpPage> {
                       child: TextField(
                         controller: _passwordController,
                         obscureText: true,
-                        decoration: InputDecoration(
+                        decoration: const InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Mot de passe',
                         ),
@@ -100,7 +92,7 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
 
                 // Login Button
-                SizedBox(height: 10,),
+                const SizedBox(height: 10,),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: GestureDetector(
@@ -109,16 +101,16 @@ class _SignUpPageState extends State<SignUpPage> {
                       dynamic result = await _auth.signUp(_emailController.text, _passwordController.text);
                       if(result!=null) {
                         debugPrint(result.id);
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => const Wrapper()));
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) =>  SignupStep0()));
                       } else {
                         setState(() => loading = false );
                       }
                     },
                     child: Container(
-                      padding: EdgeInsets.all(20),
+                      padding: const EdgeInsets.all(20),
                       decoration: BoxDecoration( color: Colors.deepPurple,
                           borderRadius: BorderRadius.circular(12)),
-                      child: Center(
+                      child: const Center(
                         child: Text(
                           "S'iscrire",
                           style: TextStyle(
@@ -132,15 +124,20 @@ class _SignUpPageState extends State<SignUpPage> {
                 ),
 
                 //Registration page link here
-                SizedBox(height: 25,),
+                const SizedBox(height: 25,),
                 Row(
                   mainAxisAlignment: MainAxisAlignment.center,
                   children: [
-                    Text("Vous n'avez pas de compte?"),
-                    Text("Inscrivez vous!",
-                      style: TextStyle(
-                          color: Colors.blue,
-                          fontWeight: FontWeight.bold),
+                    const Text("Vous avez déjà un compte?"),
+                    GestureDetector(
+                      onTap: () {
+                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => LoginPage()));
+                      } ,
+                      child: const Text("Connectez vous!",
+                        style: TextStyle(
+                            color: Colors.blue,
+                            fontWeight: FontWeight.bold),
+                      ),
                     ),
                   ],
                 ),
