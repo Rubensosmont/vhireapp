@@ -1,35 +1,33 @@
 import 'package:flutter/material.dart';
-import 'login_page.dart';
 
 class NewPasswordPage extends StatefulWidget {
+  const NewPasswordPage({super.key});
+
   @override
-  _NewPasswordPageState createState() => _NewPasswordPageState();
+  State<NewPasswordPage> createState() => _NewPasswordPageState();
 }
 
 class _NewPasswordPageState extends State<NewPasswordPage> {
-  TextEditingController _passwordController = TextEditingController();
-  TextEditingController _confirmPasswordController = TextEditingController();
+
+  final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPasswordController = TextEditingController();
   bool _passwordVisible = false;
 
   @override
   Widget build(BuildContext context) {
-    return MaterialApp(
-      theme: ThemeData(
-        primaryColor: Colors.deepPurple,
-      ),
-      home: Scaffold(
+    return Scaffold(
         appBar: AppBar(
-          title: Text('Nouveau mot de passe'),
+          title: const Text('Nouveau mot de passe'),
           backgroundColor: Colors.deepPurple, 
         ),
         body: Center(
           child: Padding(
-            padding: EdgeInsets.all(20.0),
+            padding: const EdgeInsets.all(20.0),
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center,
               crossAxisAlignment: CrossAxisAlignment.stretch,
               children: <Widget>[
-                Text(
+                const Text(
                   'Réinitialiser le mot de passe',
                   style: TextStyle(
                     fontSize: 18,
@@ -37,7 +35,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                   ),
                   textAlign: TextAlign.center,
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 TextFormField(
                   controller: _passwordController,
                   obscureText: !_passwordVisible,
@@ -55,7 +53,7 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 TextFormField(
                   controller: _confirmPasswordController,
                   obscureText: !_passwordVisible,
@@ -73,24 +71,25 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                     ),
                   ),
                 ),
-                SizedBox(height: 20.0),
+                const SizedBox(height: 20.0),
                 ElevatedButton(
                   onPressed: () {
                     if (_passwordController.text == _confirmPasswordController.text) {
-                      Navigator.pushReplacement(
+                      /*Navigator.pushReplacement(
                         context,
                         MaterialPageRoute(builder: (context) => LoginPage()),
-                      );
+                      );*/
+                      debugPrint("Passed !");
                     } else {
                       showDialog(
                         context: context,
                         builder: (BuildContext context) {
                           return AlertDialog(
-                            title: Text('Erreur'),
-                            content: Text('Les mots de passe ne correspondent pas.'),
+                            title: const Text('Erreur'),
+                            content: const Text('Les mots de passe ne correspondent pas.'),
                             actions: <Widget>[
                               TextButton(
-                                child: Text('OK'),
+                                child: const Text('OK'),
                                 onPressed: () {
                                   Navigator.of(context).pop();
                                 },
@@ -101,16 +100,15 @@ class _NewPasswordPageState extends State<NewPasswordPage> {
                       );
                     }
                   },
-                  child: Text('Valider'),
                   style: ElevatedButton.styleFrom(
-                    primary: Colors.deepPurple,
+                    backgroundColor: Colors.deepPurple,
                   ),
+                  child: const Text('Valider'),
                 ),
               ],
             ),
           ),
         ),
-      ),
     );
   }
 }
