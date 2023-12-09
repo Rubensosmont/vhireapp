@@ -1,5 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:flutter/cupertino.dart';
+import 'package:flutter/material.dart';
 import 'package:vhireapp/models/user.dart';
 
 class AuthService {
@@ -47,6 +48,31 @@ class AuthService {
     } catch(e) {
       debugPrint(e.toString());
       return null;
+    }
+  }
+
+  //Reset password
+  Future pwdReset(String email, BuildContext context) async{
+    try {
+      await _auth.sendPasswordResetEmail(email: email.trim() );
+      showDialog(
+          context: context,
+          builder: (context)
+          {
+            return AlertDialog(content: Text('Password reset link sent! Check your mail'),);
+          },
+      );
+    } on FirebaseAuthException catch(e){
+      debugPrint(e.toString());
+      showDialog(
+        context: context,
+        builder: (context)
+      {
+        return AlertDialog(
+          content: Text(e.message.toString()),
+        );
+      },
+      );
     }
   }
 }

@@ -1,8 +1,11 @@
 import 'package:flutter/material.dart';
-import 'package:vhireapp/screens/authentication/new_password_page.dart';
+
+import '../../services/authentication.dart';
 
 class PasswordForgetPage extends StatelessWidget {
-  const PasswordForgetPage({super.key});
+
+  final AuthService _auth = AuthService();
+  final TextEditingController _emailController = TextEditingController();
 
   @override
   Widget build(BuildContext context) {
@@ -26,6 +29,7 @@ class PasswordForgetPage extends StatelessWidget {
               Padding(
                 padding: const EdgeInsets.symmetric(horizontal: 40.0),
                 child: TextFormField(
+                  controller: _emailController,
                   decoration: InputDecoration(
                     labelText: 'Adresse e-mail',
                     border: const OutlineInputBorder(),
@@ -39,10 +43,7 @@ class PasswordForgetPage extends StatelessWidget {
               const SizedBox(height: 20),
               ElevatedButton(
                 onPressed: () {
-                  Navigator.push(
-                    context,
-                    MaterialPageRoute(builder: (context) => NewPasswordPage()),
-                  );
+                  _auth.pwdReset(_emailController.text, context);
                 },
                 style: ElevatedButton.styleFrom(
                   backgroundColor: Colors.deepPurple,
