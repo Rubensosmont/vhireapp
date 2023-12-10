@@ -23,6 +23,7 @@ class AuthenticatedUser {
     this.license_id
   });
 
+
   // Function to update user's data
   Future update({String? lastname, String? firstname, String? email, String? gender, String? idcard, String? license_id}) async {
 
@@ -56,5 +57,8 @@ class AuthenticatedUser {
       });
     }
   }
+
+
+  // Function to update from firebase // ou pour streamer les attributs du user
 
 }

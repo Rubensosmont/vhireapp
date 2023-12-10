@@ -1,7 +1,6 @@
 import 'package:firebase_auth/firebase_auth.dart';
-import 'package:flutter/cupertino.dart';
-import 'package:flutter/material.dart';
 import 'package:vhireapp/models/user.dart';
+import 'package:vhireapp/shared/error.dart';
 
 class AuthService {
 
@@ -23,9 +22,8 @@ class AuthService {
       UserCredential result = await _auth.signInWithEmailAndPassword(email: email, password: password);
       User user = result.user!;
       return _authenticatedUserFromUser(user);
-    } catch(e) {
-      debugPrint(e.toString());
-      return null;
+    } on FirebaseAuthException catch(e) {
+      return CustomError(e.code, e.message!);
     }
   }
 
@@ -35,9 +33,8 @@ class AuthService {
       UserCredential result = await _auth.createUserWithEmailAndPassword(email: email, password: password);
       User user = result.user!;
       return _authenticatedUserFromUser(user);
-    } catch(e) {
-      debugPrint(e.toString());
-      return null;
+    } on FirebaseAuthException catch(e) {
+      return CustomError(e.code, e.message!);
     }
   }
 
@@ -45,34 +42,18 @@ class AuthService {
   Future signOut() async {
     try {
       return await _auth.signOut();
-    } catch(e) {
-      debugPrint(e.toString());
-      return null;
+    } on FirebaseAuthException catch(e) {
+      return CustomError(e.code, e.message!);
     }
   }
 
-  //Reset password
-  Future pwdReset(String email, BuildContext context) async{
+  // Reset password
+  Future pwdReset(String email) async{
     try {
-      await _auth.sendPasswordResetEmail(email: email.trim() );
-      showDialog(
-          context: context,
-          builder: (context)
-          {
-            return AlertDialog(content: Text('Password reset link sent! Check your mail'),);
-          },
-      );
+      await _auth.sendPasswordResetEmail(email: email.trim());
+      return 'Lien de reinitialisation envoyé! Vérifiez vôtre mail.';
     } on FirebaseAuthException catch(e){
-      debugPrint(e.toString());
-      showDialog(
-        context: context,
-        builder: (context)
-      {
-        return AlertDialog(
-          content: Text(e.message.toString()),
-        );
-      },
-      );
+      return CustomError(e.code, e.message!);
     }
   }
 }

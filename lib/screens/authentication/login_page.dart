@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:vhireapp/models/user.dart';
 import 'package:vhireapp/screens/authentication/signup_page.dart';
 import 'package:vhireapp/services/authentication.dart';
 import 'package:vhireapp/shared/loading.dart';
@@ -19,6 +20,7 @@ class _LoginPageState extends State<LoginPage> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  String error = " ";
 
   @override
   void dispose() {
@@ -37,8 +39,8 @@ class _LoginPageState extends State<LoginPage> {
             child: Column(
               mainAxisAlignment: MainAxisAlignment.center ,
               children: [
-                const Icon(Icons.car_repair, size: 100,),
-                const SizedBox(height: 75,),
+                Image.asset("assets/images/vhire.png", scale: 5),
+                const SizedBox(height: 60,),
                 const Text("Bienvenue !", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36)),
                 const SizedBox(height:10,),
                 const Text('Connectez vous', style: TextStyle(fontSize: 18)),
@@ -52,7 +54,7 @@ class _LoginPageState extends State<LoginPage> {
                       borderRadius: BorderRadius.circular(12),
                     ),
                     child: Padding(
-                      padding: const EdgeInsets.only(left: 20.0),
+                      padding: const EdgeInsets.only(left: 7.0),
                       child: TextField(
                         controller: _emailController,
                         decoration: InputDecoration(
@@ -61,6 +63,7 @@ class _LoginPageState extends State<LoginPage> {
                           fillColor: Colors.grey[200],
                           filled: true,
                         ),
+                        keyboardType: TextInputType.emailAddress,
                       ),
                     ),
                   ),
@@ -91,23 +94,26 @@ class _LoginPageState extends State<LoginPage> {
                 ),
 
                 // Login Button
-                const SizedBox(height: 10),
+                const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: GestureDetector(
                     onTap: () async {
                       setState(() => loading = true );
                       dynamic result = await _auth.signIn(_emailController.text, _passwordController.text);
-                      if(result!=null) {
+                      if(result is AuthenticatedUser) {
                         debugPrint(result.id);
                         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => const Wrapper()));
                       } else {
-                        setState(() => loading = false );
+                        setState(() {
+                          loading = false;
+                          error = result.message;
+                        });
                       }
                     },
                     child: Container(
                       padding: const EdgeInsets.all(20),
-                      decoration: BoxDecoration( color: Colors.deepPurple,
+                      decoration: BoxDecoration( color: const Color(0xFF5371E9),
                           borderRadius: BorderRadius.circular(12)),
                       child: const Center(
                         child: Text(
@@ -122,9 +128,9 @@ class _LoginPageState extends State<LoginPage> {
                   ),
                 ),
 
-                const SizedBox(
-                  height: 10,
-                ),
+                const SizedBox(height: 3),
+                Text(error, style: const TextStyle(fontSize: 10, color: Color(0xFFDC5757))),
+                const SizedBox(height: 8),
                 GestureDetector(
                   onTap: () {
                     Navigator.push(context, MaterialPageRoute(
@@ -151,7 +157,8 @@ class _LoginPageState extends State<LoginPage> {
                       onTap: () {
                         Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => SignUpPage()));
                       } ,
-                      child: const Text("Inscrivez vous!",
+                      child: const Text(
+                        " Inscrivez vous!",
                         style: TextStyle(
                             color: Colors.blue,
                             fontWeight: FontWeight.bold),
