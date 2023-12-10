@@ -1,18 +1,22 @@
 import 'package:flutter/material.dart';
-
-import '../../services/authentication.dart';
+import 'package:vhireapp/services/authentication.dart';
+import 'package:vhireapp/shared/error.dart';
 
 class PasswordForgetPage extends StatelessWidget {
 
+  PasswordForgetPage({super.key});
+
   final AuthService _auth = AuthService();
   final TextEditingController _emailController = TextEditingController();
+  String textShown = "";
 
   @override
   Widget build(BuildContext context) {
     return Scaffold(
+      backgroundColor: Colors.grey[300],
       appBar: AppBar(
         title: const Text('Mot de passe oublié'),
-        backgroundColor: Colors.deepPurple, 
+        backgroundColor: const Color(0xFF5371E9),
       ),
       body: Center(
         child: Padding(
@@ -27,29 +31,61 @@ class PasswordForgetPage extends StatelessWidget {
               ),
               const SizedBox(height: 20),
               Padding(
-                padding: const EdgeInsets.symmetric(horizontal: 40.0),
-                child: TextFormField(
-                  controller: _emailController,
-                  decoration: InputDecoration(
-                    labelText: 'Adresse e-mail',
-                    border: const OutlineInputBorder(),
-                    fillColor:
-                        Colors.grey[200], 
-                    filled: true,
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: Container(
+                  decoration: BoxDecoration(
+                    color: Colors.grey[200],
+                    border: Border.all(color: Colors.white),
+                    borderRadius: BorderRadius.circular(12),
                   ),
-                  keyboardType: TextInputType.emailAddress,
+                  child: Padding(
+                    padding: const EdgeInsets.only(left: 7.0),
+                    child: TextField(
+                      controller: _emailController,
+                      decoration: InputDecoration(
+                        border: InputBorder.none,
+                        hintText: 'Email',
+                        fillColor: Colors.grey[200],
+                        filled: true,
+                      ),
+                      keyboardType: TextInputType.emailAddress,
+                    ),
+                  ),
                 ),
               ),
-              const SizedBox(height: 20),
-              ElevatedButton(
-                onPressed: () {
-                  _auth.pwdReset(_emailController.text, context);
-                },
-                style: ElevatedButton.styleFrom(
-                  backgroundColor: Colors.deepPurple,
+
+              const SizedBox(height: 10),
+              Padding(
+                padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                child: GestureDetector(
+                  onTap: () async {
+                    dynamic result = await _auth.pwdReset(_emailController.text);
+                    if(result is CustomError) {
+                      textShown = result.message;
+                    } else {
+                      textShown = result;
+                    }
+                    showDialog(context: context, builder: (BuildContext context) {
+                      return AlertDialog(content: Text(textShown));
+                    });
+                  },
+                  child: Container(
+                    padding: const EdgeInsets.all(15),
+                    decoration: BoxDecoration( color: const Color(0xFF5371E9),
+                        borderRadius: BorderRadius.circular(12)),
+                    child: const Center(
+                      child: Text(
+                        "Réinitialiser le mot de passe",
+                        style: TextStyle(
+                          color: Colors.white,
+                          fontWeight: FontWeight.bold,
+                          fontSize: 15,),
+                      ),
+                    ),
+                  ),
                 ),
-                child: const Text('Réinitialiser le mot de passe'),
               ),
+              const SizedBox(height: 25),
             ],
           ),
         ),
