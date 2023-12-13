@@ -21,6 +21,7 @@ class _LoginPageState extends State<LoginPage> {
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
   String error = " ";
+  bool _showPassword = false;
 
   @override
   void dispose() {
@@ -83,10 +84,14 @@ class _LoginPageState extends State<LoginPage> {
                       padding: const EdgeInsets.only(left: 20.0),
                       child: TextField(
                         controller: _passwordController,
-                        obscureText: true,
-                        decoration: const InputDecoration(
+                        obscureText: !_showPassword,
+                        decoration: InputDecoration(
                           border: InputBorder.none,
                           hintText: 'Mot de passe',
+                          suffixIcon: IconButton(
+                            icon: Icon(_showPassword ? Icons.visibility : Icons.visibility_off),
+                            onPressed: () => setState(() => _showPassword = !_showPassword),
+                          )
                         ),
                       ),
                     ),
