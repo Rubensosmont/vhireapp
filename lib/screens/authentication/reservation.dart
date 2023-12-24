@@ -112,7 +112,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 ),
                 SizedBox(height: 10),
                 Image.asset(
-                  'assets\images\1140x760_sv650x_2024_studio_1.png',
+                  'assets\images\suzuki.png',
                   height: 150,
                 ),
                 SizedBox(height: 10),
