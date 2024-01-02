@@ -2,9 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:provider/provider.dart';
 import 'package:vhireapp/models/user.dart';
 import 'package:vhireapp/screens/authentication/login_page.dart';
-import 'package:vhireapp/screens/comments_section/comments_page.dart';
-import 'package:vhireapp/screens/home/home_page.dart';
-import 'home/Catalog.dart';
+import 'package:vhireapp/screens/home/home/await_get_user.dart';
 
 
 class Wrapper extends StatelessWidget {
@@ -19,7 +17,7 @@ class Wrapper extends StatelessWidget {
     if(user==null) {
       return const LoginPage();
     } else {
-      return HomePage(user: user);
+      return GetUpdateUserBeforeHome(user: user);
     }
   }
 }
