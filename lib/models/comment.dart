@@ -11,6 +11,7 @@ class Comment {
   final Timestamp created_at;
   late Timestamp? deleted_at;
   late double? note;
+  late String username;
 
   // Constructor
   Comment({
@@ -20,7 +21,32 @@ class Comment {
     this.content,
     required this.created_at,
     this.deleted_at,
-    this.note
+    this.note,
+    required this.username
   });
-  
+
+
+  factory Comment.fromDocumentSnapshot(DocumentSnapshot document) {
+    Map<String, dynamic> data = document.data() as Map<String, dynamic>;
+    Comment comment = Comment(
+        id: document.id,
+        user_id: data["user_id"],
+        vehicle_id: data["vehicle_id"],
+        content: data["content"],
+        created_at: data["created_at"],
+        deleted_at: data["deleted_at"],
+        note: data["note"].toDouble(),
+        username: data["username"]
+    );
+    return comment;
+  }
+
+
+  // get
+  static Future getCommentByVehicleID(String vehicleID) async {
+    QuerySnapshot querySnapshot = await commentCollection.where("vehicle_id", isEqualTo: vehicleID).get();
+    List<Comment> commentList = querySnapshot.docs.map((QueryDocumentSnapshot document) => Comment.fromDocumentSnapshot(document)).toList();
+    return commentList;
+  }
+
 }

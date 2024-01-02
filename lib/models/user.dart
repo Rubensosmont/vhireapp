@@ -59,6 +59,15 @@ class AuthenticatedUser {
   }
 
 
-  // Function to update from firebase // ou pour streamer les attributs du user
+  // Function to update from firebase
+  Future getUpdate() async {
+    dynamic userData = (await userCollection.doc(id).get()).data();
+    lastname = userData["lastname"];
+    firstname = userData["firstname"];
+    email = userData["email"];
+    gender = userData["gender"];
+    idcard = userData["idcard"];
+    license_id = userData["license_id"];
+  }
 
 }

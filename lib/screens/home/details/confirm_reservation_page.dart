@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:vhireapp/models/vehicles.dart';
+import 'package:vhireapp/models/vehicle.dart';
 
 class ConfirmReservation extends StatelessWidget {
   final DateTime startDate;
@@ -46,8 +46,8 @@ class ConfirmReservation extends StatelessWidget {
                   ),
                 ),
                 SizedBox(height: 10),
-                Image.asset(
-                  'assets\images\suzuki.png',
+                Image.network(
+                  "assets/images/suzuki.png",
                   height: 150,
                 ),
                 SizedBox(height: 10),

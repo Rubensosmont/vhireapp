@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:vhireapp/models/user.dart';
-import 'package:vhireapp/screens/home/home_page.dart';
+import 'package:vhireapp/screens/home/home/await_get_user.dart';
 
 class SignupSteps extends StatefulWidget {
 
@@ -235,7 +235,7 @@ class _SignupStepsState extends State<SignupSteps> {
                         gender: _vals["gender"]
                       );
                       Navigator.of(context).pushReplacement(MaterialPageRoute(
-                        builder: (BuildContext context) => HomePage(user: widget.user)));
+                        builder: (BuildContext context) => GetUpdateUserBeforeHome(user: widget.user)));
                     }
                   },
                   child: Container(

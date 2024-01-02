@@ -19,6 +19,7 @@ class _SignUpPageState extends State<SignUpPage> {
 
   final TextEditingController _emailController = TextEditingController();
   final TextEditingController _passwordController = TextEditingController();
+  final TextEditingController _confirmPassController = TextEditingController();
   String error = " ";
   bool _showPassword = false;
 
@@ -39,7 +40,7 @@ class _SignUpPageState extends State<SignUpPage> {
               mainAxisAlignment: MainAxisAlignment.center ,
               children: [
                 Image.asset("assets/images/vhire.png", scale: 5),
-                const SizedBox(height: 75,),
+                const SizedBox(height: 50,),
                 const Text("Bienvenue !", style: TextStyle(fontWeight: FontWeight.bold, fontSize: 36)),
                 const SizedBox(height: 10),
                 const Text('Création de compte', style: TextStyle(fontSize: 18)),
@@ -99,23 +100,51 @@ class _SignUpPageState extends State<SignUpPage> {
                   ),
                 ),
 
+                // Confirm Password text field
+                const SizedBox(height: 12,),
+                Padding(
+                  padding: const EdgeInsets.symmetric(horizontal: 25.0),
+                  child: Container(
+                    decoration: BoxDecoration(
+                      color: Colors.grey[200],
+                      border: Border.all(color: Colors.white),
+                      borderRadius: BorderRadius.circular(12),
+                    ),
+                    child: Padding(
+                      padding: const EdgeInsets.only(left: 20.0),
+                      child: TextField(
+                        controller: _confirmPassController,
+                        obscureText: !_showPassword,
+                        decoration: const InputDecoration(
+                            border: InputBorder.none,
+                            hintText: 'Confirmer mot de passe'
+                        ),
+                      ),
+                    ),
+                  ),
+                ),
+
                 // signIn Button
                 const SizedBox(height: 20),
                 Padding(
                   padding: const EdgeInsets.symmetric(horizontal: 25.0),
                   child: GestureDetector(
                     onTap: () async {
-                      setState(() => loading = true );
-                      dynamic result = await _auth.signUp(_emailController.text, _passwordController.text);
-                      if(result is AuthenticatedUser) {
-                        debugPrint(result.id);
-                        result.update(email: _emailController.text);
-                        Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) =>  SignupSteps(user: result)));
+                      if(_passwordController.text != _confirmPassController.text) {
+                        setState(() => error = "Les champs de mots de passe ne correspondent pas");
                       } else {
-                        setState(() {
-                          loading = false;
-                          error = result.message;
-                        });
+                        setState(() => loading = true );
+                        dynamic result = await _auth.signUp(_emailController.text, _passwordController.text);
+                        if(result is AuthenticatedUser) {
+                          debugPrint(result.id);
+                          result.update(email: _emailController.text);
+                          Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) =>  SignupSteps(user: result)));
+                        } else {
+                          setState(() {
+                            loading = false;
+                            error = result.message;
+                          });
+                        }
                       }
                     },
                     child: Container(
