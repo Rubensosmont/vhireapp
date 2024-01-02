@@ -33,8 +33,8 @@ class _CommentsPageState extends State<CommentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return Scaffold(
-      body: (!_isLoading) ? SafeArea(
+    return SizedBox(
+      child: (!_isLoading) ? SafeArea(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -104,7 +104,13 @@ class _CommentsPageState extends State<CommentsPage> {
             ],
           ),
         ),
-      ) : const Loading(),
+      ) : Row(
+        mainAxisAlignment: MainAxisAlignment.center,
+        children: [
+          SizedBox(height: MediaQuery.of(context).size.height/2 + 150),
+          const Loading()
+        ],
+      ),
     );
   }
 }

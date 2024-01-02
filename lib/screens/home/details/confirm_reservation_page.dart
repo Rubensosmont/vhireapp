@@ -1,15 +1,18 @@
 import 'package:flutter/material.dart';
+import 'package:vhireapp/models/reservation.dart';
 import 'package:vhireapp/models/vehicle.dart';
 
 class ConfirmReservation extends StatelessWidget {
   final DateTime startDate;
   final DateTime endDate;
   final Vehicle vehicle;
+  final Reservation reservation;
 
-  ConfirmReservation({
+  ConfirmReservation({super.key,
     required this.startDate,
     required this.endDate,
     required this.vehicle,
+    required this.reservation
   });
 
   @override

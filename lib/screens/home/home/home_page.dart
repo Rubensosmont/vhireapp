@@ -113,44 +113,46 @@ class _HomePageState extends State<HomePage> {
       ),
 
 
-      body: Container(
-        color: Colors.white,
-        child: Align(
-          alignment: Alignment.topCenter,
-          child: Column(
-            children: [
-              const SizedBox(height: 25),
-              Image.asset("assets/images/home/vhirelogo.png", scale: 1.5),
-              const SizedBox(height: 25),
-              Container(
-                margin: const EdgeInsets.only(top: 10),
-                height: 85,
-                child: Row(
-                  mainAxisAlignment: MainAxisAlignment.spaceEvenly,
-                  children: [
-                    buildRoundedButton('Voiture', 'assets/images/home/car.png'),
-                    buildRoundedButton('  Moto  ', 'assets/images/home/motorcycle.png'),
-                    buildRoundedButton('Camion', 'assets/images/home/truck.png'),
-                    buildRoundedButton('   Bus   ', 'assets/images/home/bus.png'),
-                  ],
+      body: SingleChildScrollView(
+        child: Container(
+          color: Colors.white,
+          child: Align(
+            alignment: Alignment.topCenter,
+            child: Column(
+              children: [
+                const SizedBox(height: 25),
+                Image.asset("assets/images/home/vhirelogo.png", scale: 1.5),
+                const SizedBox(height: 25),
+                Container(
+                  margin: const EdgeInsets.only(top: 10),
+                  height: 85,
+                  child: Row(
+                    mainAxisAlignment: MainAxisAlignment.spaceEvenly,
+                    children: [
+                      buildRoundedButton('Voiture', 'assets/images/home/car.png'),
+                      buildRoundedButton('  Moto  ', 'assets/images/home/motorcycle.png'),
+                      buildRoundedButton('Camion', 'assets/images/home/truck.png'),
+                      buildRoundedButton('   Bus   ', 'assets/images/home/bus.png'),
+                    ],
+                  ),
                 ),
-              ),
-              Stack(
-                children: [
-                  Positioned(
-                    left: -80,
-                    top: 80,
-                    child: Transform.rotate(
-                      angle: 334 * 3.141592653589793238462 / 180,
-                      child: Image.asset("assets/images/mini_fond.png", width: 560,)
-                    )
-                  ),
-                  Positioned(
-                    child: Image.asset("assets/images/home/main_car.png")
-                  ),
-                ],
-              )
-            ],
+                Stack(
+                  children: [
+                    Positioned(
+                      left: -80,
+                      top: 80,
+                      child: Transform.rotate(
+                        angle: 334 * 3.141592653589793238462 / 180,
+                        child: Image.asset("assets/images/mini_fond.png", width: 560,)
+                      )
+                    ),
+                    Positioned(
+                      child: Image.asset("assets/images/home/main_car.png")
+                    ),
+                  ],
+                )
+              ],
+            ),
           ),
         ),
       ),
