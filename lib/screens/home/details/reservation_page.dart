@@ -35,8 +35,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
   late String limitDateShown;
   String error = " ";
   int _currentIndex = 1;
-  late DateTime startDate = DateTime.now();
-  late DateTime endDate = DateTime.now();
+  DateTime now = DateTime.now();
+  late DateTime startDate;
+  late DateTime endDate;
 
   Future<void> _selectStartDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -44,6 +45,18 @@ class _ReservationScreenState extends State<ReservationScreen> {
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: (widget.vehicle.limit_date == null) ? DateTime(2050) : widget.vehicle.limit_date!.toDate(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: const Color(0xFF5371E9),
+            colorScheme: const ColorScheme.light(primary: Color(0xFF5371E9)),
+            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          ),
+          child: child!,
+        );
+      },
+      cancelText: "ANNULER",
+      confirmText: "VALIDER",
     );
 
     if (picked != null && picked != startDate) {
@@ -56,9 +69,21 @@ class _ReservationScreenState extends State<ReservationScreen> {
   Future<void> _selectEndDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: startDate,
-      firstDate: startDate,
+      initialDate: startDate.add(const Duration(days: 1)),
+      firstDate: startDate.add(const Duration(days: 1)),
       lastDate: (widget.vehicle.limit_date == null) ? DateTime(2050) : widget.vehicle.limit_date!.toDate(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: const Color(0xFF5371E9),
+            colorScheme: const ColorScheme.light(primary: Color(0xFF5371E9)),
+            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          ),
+          child: child!,
+        );
+      },
+      cancelText: "ANNULER",
+      confirmText: "VALIDER",
     );
 
     if (picked != null && picked != endDate) {
@@ -72,6 +97,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
   void initState() {
     super.initState();
     limitDateShown = (widget.vehicle.limit_date == null) ? "\u221E" : DateFormat("dd/MM/yy").format(widget.vehicle.limit_date!.toDate());
+    startDate = DateTime(now.year, now.month, now.day);
+    endDate = startDate.add(const Duration(days: 1));
     if(widget.user.firstname == null) {
       _displayedFirstname = "John";
     } else {
@@ -106,7 +133,28 @@ class _ReservationScreenState extends State<ReservationScreen> {
         ],
       ),
 
-      body: (_currentIndex==1) ? Stack(
+      body: (_currentIndex==0) ? WillPopScope(
+        onWillPop: () async {
+          setState(() => _currentIndex = 1);
+          return false;
+        },
+        child: Column(
+          children: [
+            Row(
+              children: [
+                const SizedBox(width: 12),
+                IconButton(
+                  onPressed: () => setState(() => _currentIndex = 1),
+                  icon: const Icon(Icons.arrow_back, color: Colors.black),
+                  iconSize: 35,
+                )
+              ],
+            ),
+            Geolocation(),
+          ],
+        ),
+      ) :
+      (_currentIndex==1) ? Stack(
         children: [
           ColorFiltered(
             colorFilter: ColorFilter.mode(Colors.black.withOpacity(0.65), BlendMode.darken),
@@ -118,208 +166,233 @@ class _ReservationScreenState extends State<ReservationScreen> {
             )
           ),
           Positioned(
-            child: Center(
-              child: Container(
-                margin: const EdgeInsets.all(25),
-                padding: const EdgeInsets.all(10.0),
-                decoration: BoxDecoration(
-                  color: Colors.white,
-                  borderRadius: BorderRadius.circular(40.0),
-                ),
-                child: Column(
-                  mainAxisAlignment: MainAxisAlignment.center,
-                  children: [
-                    Row(
-                      children: [
-                        IconButton(
-                          onPressed: () => Navigator.pop(context),
-                          icon: Icon(Icons.arrow_back),
-                          iconSize: 35,
-                        ),
-                        Expanded(
-                          child: Container(
-                            padding: EdgeInsets.only(right: 45),
-                            child: Text(
-                              "${widget.vehicle.agency_name}",
-                              style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black),
-                              textAlign: TextAlign.center,
-                              overflow: TextOverflow.ellipsis,
-                              maxLines: 2,
-                            ),
+            child: SingleChildScrollView(
+              child: Center(
+                child: Container(
+                  margin: const EdgeInsets.all(25),
+                  padding: const EdgeInsets.all(10.0),
+                  decoration: BoxDecoration(
+                    color: Colors.white,
+                    borderRadius: BorderRadius.circular(40.0),
+                  ),
+                  child: Column(
+                    mainAxisAlignment: MainAxisAlignment.center,
+                    children: [
+                      Row(
+                        children: [
+                          IconButton(
+                            onPressed: () => Navigator.pop(context),
+                            icon: Icon(Icons.arrow_back),
+                            iconSize: 35,
                           ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 10),
-                    Text(
-                      "${widget.vehicle.brand} ${widget.vehicle.model}",
-                      style: const TextStyle(fontSize: 18, color: Color(0xFF419CE1)),
-                      textAlign: TextAlign.center,
-                      overflow: TextOverflow.ellipsis,
-                      maxLines: 2,
-                    ),
-                    const SizedBox(height: 5),
-                    Stack(
-                      children: [
-                        Image.asset(
-                          "assets/images/mini_fond.png",
-                          scale: 1,
-                        ),
-                        Positioned(
-                          top: 5,
-                          left: 35,
-                          child: (widget.vehicle.img_url==null) ? Image.asset(
-                            "assets/images/default.png",
-                            height: 135,
-                            width: 215,
-                          ) : Image.network(
-                            widget.vehicle.img_url!,
-                            height: 135,
-                            width: 215,
-                          ),
-                        )
-                      ],
-                    ),
-                    const SizedBox(height: 5),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        ProductStarsRow(note: widget.vehicle.note, size: 24)
-                      ],
-                    ),
-                    const SizedBox(height: 20),
-
-                    Column(
-                      children: [
-                        Text(
-                          "${widget.vehicle.price} FCFA",
-                          style: const TextStyle(
-                            fontSize: 24,
-                            color: Colors.black,
-                            fontWeight: FontWeight.bold
-                          ),
-                        ),
-                        const SizedBox(height: 5),
-                        const Text(
-                          'Journalier',
-                          style: TextStyle(
-                            fontSize: 22,
-                            color: Color(0xFF419CE1),
-                          ),
-                        ),
-                        const SizedBox(height: 10),
-                        RichText(
-                          text: TextSpan(
-                            children: [
-                              const TextSpan(
-                                text: "Disponible jusqu'au: ",
-                                style: TextStyle(
-                                  fontSize: 18,
-                                  color: Colors.black,
-                                ),
-                              ),
-                              TextSpan(
-                                text: limitDateShown,
-                                style: const TextStyle(
-                                  fontSize: 17,
-                                  fontWeight: FontWeight.bold,
-                                  color: Color(0xFF419CE1),
-                                ),
-                              ),
-                            ],
-                          ),
-                        ),
-                      ],
-                    ),
-                    const SizedBox(height: 30),
-
-                    Text(error, style: const TextStyle(fontSize: 10, color: Color(0xFFDC5757))),
-                    const SizedBox(height: 3),
-
-                    SizedBox(
-                      width: 250,
-                      child: TextField(
-                        readOnly: true,
-                        onTap: () async => await _selectStartDate(context),
-                        decoration: InputDecoration(
-                          hintText: startDate != DateTime.now()
-                              ? 'Début de location: ${startDate.day}/${startDate.month}/${startDate.year}'
-                              : 'Début de location',
-                          contentPadding: const EdgeInsets.all(15),
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15))
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 10),
-
-                    SizedBox(
-                      width: 250,
-                      child: TextField(
-                        readOnly: true,
-                        onTap: () async => await _selectEndDate(context),
-                        decoration: InputDecoration(
-                          hintText: endDate != DateTime.now()
-                              ? 'Fin de location: ${endDate.day}/${endDate.month}/${endDate.year}'
-                              : 'Fin de location',
-                          contentPadding: const EdgeInsets.all(15),
-                          filled: true,
-                          fillColor: Colors.grey[200],
-                          border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
-                        ),
-                      ),
-                    ),
-                    const SizedBox(height: 20),
-
-                    Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [
-                        GestureDetector(
-                          onTap: () {
-                            if(startDate.isAfter(endDate)) {
-                              setState(() {
-                                error = "Le date de fin ne peut pas être antérieure à celle de début";
-                              });
-                            } else {
-                              setState(() => error = "");
-                              Reservation reservation = Reservation(
-                                user_id: widget.user.id,
-                                vehicle_id: widget.vehicle.id,
-                                begin_at: Timestamp.fromDate(startDate),
-                                finish_at: Timestamp.fromDate(endDate),
-                                vehicle_price: widget.vehicle.price
-                              );
-                              //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ConfirmReservation(reservation: reservation)));
-                            }
-                          },
-                          child: Container(
-                            decoration: BoxDecoration(
-                              borderRadius: BorderRadius.circular(12),
-                              color: const Color(0xFF57DC90),
-                            ),
-                            width: 140,
-                            height: 40,
-                            child: const Center(
+                          Expanded(
+                            child: Container(
+                              padding: EdgeInsets.only(right: 45),
                               child: Text(
-                                'Réserver',
-                                style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+                                "${widget.vehicle.agency_name}",
+                                style: const TextStyle(fontSize: 25, fontWeight: FontWeight.bold, color: Colors.black),
                                 textAlign: TextAlign.center,
+                                overflow: TextOverflow.ellipsis,
+                                maxLines: 2,
                               ),
                             ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 10),
+                      Text(
+                        "${widget.vehicle.brand} ${widget.vehicle.model}",
+                        style: const TextStyle(fontSize: 18, color: Color(0xFF419CE1)),
+                        textAlign: TextAlign.center,
+                        overflow: TextOverflow.ellipsis,
+                        maxLines: 2,
+                      ),
+                      const SizedBox(height: 5),
+                      Stack(
+                        children: [
+                          Image.asset(
+                            "assets/images/mini_fond.png",
+                            scale: 1,
                           ),
-                        )
-                      ]
-                    ),
+                          Positioned(
+                            top: 5,
+                            left: 35,
+                            child: (widget.vehicle.img_url==null) ? Image.asset(
+                              "assets/images/default.png",
+                              height: 135,
+                              width: 215,
+                            ) : Image.network(
+                              widget.vehicle.img_url!,
+                              height: 135,
+                              width: 215,
+                            ),
+                          )
+                        ],
+                      ),
+                      const SizedBox(height: 5),
 
-                  ],
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          ProductStarsRow(note: widget.vehicle.note, size: 24)
+                        ],
+                      ),
+                      const SizedBox(height: 20),
+
+                      Column(
+                        children: [
+                          Text(
+                            "${NumberFormat.decimalPattern('fr').format(widget.vehicle.price)} FCFA",
+                            style: const TextStyle(
+                              fontSize: 24,
+                              color: Colors.black,
+                              fontWeight: FontWeight.bold
+                            ),
+                          ),
+                          const SizedBox(height: 5),
+                          const Text(
+                            'Journalier',
+                            style: TextStyle(
+                              fontSize: 22,
+                              color: Color(0xFF419CE1),
+                            ),
+                          ),
+                          const SizedBox(height: 10),
+                          RichText(
+                            text: TextSpan(
+                              children: [
+                                const TextSpan(
+                                  text: "Disponible jusqu'au: ",
+                                  style: TextStyle(
+                                    fontSize: 18,
+                                    color: Colors.black,
+                                  ),
+                                ),
+                                TextSpan(
+                                  text: limitDateShown,
+                                  style: const TextStyle(
+                                    fontSize: 17,
+                                    fontWeight: FontWeight.bold,
+                                    color: Color(0xFF419CE1),
+                                  ),
+                                ),
+                              ],
+                            ),
+                          ),
+                        ],
+                      ),
+                      const SizedBox(height: 30),
+
+                      Text(error, style: const TextStyle(fontSize: 10, color: Color(0xFFDC5757))),
+                      const SizedBox(height: 3),
+
+                      SizedBox(
+                        width: 250,
+                        child: TextField(
+                          readOnly: true,
+                          onTap: () async => await _selectStartDate(context),
+                          decoration: InputDecoration(
+                            hintText: startDate != DateTime.now()
+                                ? "Début de location: ${DateFormat('dd/MM/yy').format(startDate)}"
+                                : 'Début de location',
+                            contentPadding: const EdgeInsets.all(15),
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(15))
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 10),
+
+                      SizedBox(
+                        width: 250,
+                        child: TextField(
+                          readOnly: true,
+                          onTap: () async => await _selectEndDate(context),
+                          decoration: InputDecoration(
+                            hintText: endDate != DateTime.now()
+                                ? "Fin de location: ${DateFormat('dd/MM/yy').format(endDate)}"
+                                : 'Fin de location',
+                            contentPadding: const EdgeInsets.all(15),
+                            filled: true,
+                            fillColor: Colors.grey[200],
+                            border: OutlineInputBorder(borderRadius: BorderRadius.circular(15)),
+                          ),
+                        ),
+                      ),
+                      const SizedBox(height: 20),
+
+                      Row(
+                        mainAxisAlignment: MainAxisAlignment.center,
+                        children: [
+                          GestureDetector(
+                            onTap: () {
+                              if(startDate.isAfter(endDate)) {
+                                setState(() {
+                                  error = "Le date de fin ne peut pas être antérieure à celle de début";
+                                });
+                              } else {
+                                setState(() => error = "");
+                                Reservation reservation = Reservation(
+                                  user_id: widget.user.id,
+                                  vehicle_id: widget.vehicle.id,
+                                  begin_at: Timestamp.fromDate(startDate),
+                                  finish_at: Timestamp.fromDate(endDate.add(const Duration(seconds: 1))),
+                                  vehicle_price: widget.vehicle.price
+                                );
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => ConfirmReservation(reservation: reservation, user: widget.user, vehicle: widget.vehicle)));
+                              }
+                            },
+                            child: Container(
+                              decoration: BoxDecoration(
+                                borderRadius: BorderRadius.circular(12),
+                                color: const Color(0xFF57DC90),
+                              ),
+                              width: 140,
+                              height: 40,
+                              child: const Center(
+                                child: Text(
+                                  'Réserver',
+                                  style: TextStyle(color: Colors.white, fontSize: 22, fontWeight: FontWeight.bold),
+                                  textAlign: TextAlign.center,
+                                ),
+                              ),
+                            ),
+                          )
+                        ]
+                      ),
+
+                    ],
+                  ),
                 ),
               ),
             ),
           )
         ],
-      ) : (_currentIndex==2) ?  CommentsPage(vehicle_id: widget.vehicle.id) : Geolocation(),
+      ) :
+      (_currentIndex==2) ?  WillPopScope(
+        onWillPop: () async {
+          setState(() => _currentIndex = 1);
+          return false;
+        },
+        child: Column(
+          children: [
+            Row(
+              children: [
+                const SizedBox(width: 12),
+                IconButton(
+                  onPressed: () => setState(() => _currentIndex = 1),
+                  icon: const Icon(Icons.arrow_back, color: Colors.black),
+                  iconSize: 35,
+                )
+              ],
+            ),
+            Expanded(
+              child: CommentsPage(vehicle_id: widget.vehicle.id)
+            ),
+          ],
+        ),
+      ) : const SizedBox(),
 
       drawer: Drawer(width: MediaQuery.of(context).size.width * 0.65,
           child: Column(
