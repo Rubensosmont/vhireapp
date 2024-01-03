@@ -35,8 +35,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
   late String limitDateShown;
   String error = " ";
   int _currentIndex = 1;
-  late DateTime startDate = DateTime.now();
-  late DateTime endDate = DateTime.now();
+  DateTime now = DateTime.now();
+  late DateTime startDate;
+  late DateTime endDate;
 
   Future<void> _selectStartDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
@@ -44,6 +45,18 @@ class _ReservationScreenState extends State<ReservationScreen> {
       initialDate: DateTime.now(),
       firstDate: DateTime.now(),
       lastDate: (widget.vehicle.limit_date == null) ? DateTime(2050) : widget.vehicle.limit_date!.toDate(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: const Color(0xFF5371E9),
+            colorScheme: const ColorScheme.light(primary: Color(0xFF5371E9)),
+            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          ),
+          child: child!,
+        );
+      },
+      cancelText: "ANNULER",
+      confirmText: "VALIDER",
     );
 
     if (picked != null && picked != startDate) {
@@ -56,9 +69,21 @@ class _ReservationScreenState extends State<ReservationScreen> {
   Future<void> _selectEndDate(BuildContext context) async {
     final DateTime? picked = await showDatePicker(
       context: context,
-      initialDate: startDate,
-      firstDate: startDate,
+      initialDate: startDate.add(const Duration(days: 1)),
+      firstDate: startDate.add(const Duration(days: 1)),
       lastDate: (widget.vehicle.limit_date == null) ? DateTime(2050) : widget.vehicle.limit_date!.toDate(),
+      builder: (BuildContext context, Widget? child) {
+        return Theme(
+          data: ThemeData.light().copyWith(
+            primaryColor: const Color(0xFF5371E9),
+            colorScheme: const ColorScheme.light(primary: Color(0xFF5371E9)),
+            buttonTheme: const ButtonThemeData(textTheme: ButtonTextTheme.primary),
+          ),
+          child: child!,
+        );
+      },
+      cancelText: "ANNULER",
+      confirmText: "VALIDER",
     );
 
     if (picked != null && picked != endDate) {
@@ -72,6 +97,8 @@ class _ReservationScreenState extends State<ReservationScreen> {
   void initState() {
     super.initState();
     limitDateShown = (widget.vehicle.limit_date == null) ? "\u221E" : DateFormat("dd/MM/yy").format(widget.vehicle.limit_date!.toDate());
+    startDate = DateTime(now.year, now.month, now.day);
+    endDate = startDate.add(const Duration(days: 1));
     if(widget.user.firstname == null) {
       _displayedFirstname = "John";
     } else {
@@ -215,7 +242,7 @@ class _ReservationScreenState extends State<ReservationScreen> {
                       Column(
                         children: [
                           Text(
-                            "${widget.vehicle.price} FCFA",
+                            "${NumberFormat.decimalPattern('fr').format(widget.vehicle.price)} FCFA",
                             style: const TextStyle(
                               fontSize: 24,
                               color: Colors.black,
@@ -310,10 +337,10 @@ class _ReservationScreenState extends State<ReservationScreen> {
                                   user_id: widget.user.id,
                                   vehicle_id: widget.vehicle.id,
                                   begin_at: Timestamp.fromDate(startDate),
-                                  finish_at: Timestamp.fromDate(endDate),
+                                  finish_at: Timestamp.fromDate(endDate.add(const Duration(seconds: 1))),
                                   vehicle_price: widget.vehicle.price
                                 );
-                                //Navigator.of(context).push(MaterialPageRoute(builder: (BuildContext context) => ConfirmReservation(reservation: reservation)));
+                                Navigator.of(context).pushReplacement(MaterialPageRoute(builder: (BuildContext context) => ConfirmReservation(reservation: reservation, user: widget.user, vehicle: widget.vehicle)));
                               }
                             },
                             child: Container(
@@ -360,7 +387,9 @@ class _ReservationScreenState extends State<ReservationScreen> {
                 )
               ],
             ),
-            CommentsPage(vehicle_id: widget.vehicle.id),
+            Expanded(
+              child: CommentsPage(vehicle_id: widget.vehicle.id)
+            ),
           ],
         ),
       ) : const SizedBox(),

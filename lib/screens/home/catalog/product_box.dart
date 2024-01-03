@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:intl/intl.dart';
 import 'package:vhireapp/models/user.dart';
 import 'package:vhireapp/models/vehicle.dart';
 import 'package:vhireapp/screens/home/details/reservation_page.dart';
@@ -74,7 +75,7 @@ class _ProductBoxState extends State<ProductBox> {
                       ),
                       const SizedBox(height: 5),
                       Text(
-                        "      ${widget.vehicle.price} FCFA", // Access vehicle's price
+                        "      ${NumberFormat.decimalPattern('fr').format(widget.vehicle.price)} FCFA", // Access vehicle's price
                         style: const TextStyle(color: Colors.white, fontWeight: FontWeight.bold, fontSize: 15),
                       ),
                       const Text("      Journalier", style: TextStyle(color: Colors.white, fontSize: 12)),

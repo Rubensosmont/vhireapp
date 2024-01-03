@@ -107,7 +107,7 @@ class _CommentsPageState extends State<CommentsPage> {
       ) : Row(
         mainAxisAlignment: MainAxisAlignment.center,
         children: [
-          SizedBox(height: MediaQuery.of(context).size.height/2 + 150),
+          SizedBox(height: MediaQuery.of(context).size.height/2 + 70),
           const Loading()
         ],
       ),
