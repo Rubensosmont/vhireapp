@@ -2,11 +2,9 @@ import 'package:flutter/material.dart';
 import 'package:intl/intl.dart';
 import 'package:vhireapp/models/comment.dart';
 import 'package:vhireapp/shared/loading.dart';
-
 class CommentsPage extends StatefulWidget {
 
   final String vehicle_id;
-
   const CommentsPage({super.key, required this.vehicle_id});
 
   @override
@@ -33,8 +31,8 @@ class _CommentsPageState extends State<CommentsPage> {
 
   @override
   Widget build(BuildContext context) {
-    return SizedBox(
-      child: (!_isLoading) ? SafeArea(
+    return Scaffold(
+      body: (!_isLoading) ? SafeArea(
         child: SingleChildScrollView(
           child: Column(
             mainAxisAlignment: MainAxisAlignment.center,
@@ -49,7 +47,7 @@ class _CommentsPageState extends State<CommentsPage> {
                           Container(
                             decoration: BoxDecoration(
                               borderRadius: BorderRadius.circular(15),
-                              color: Colors.blueGrey,
+                              color: Color(0x55419CE1),
                             ),
                             child: Padding(
                               padding: EdgeInsets.symmetric(horizontal: 12.0, vertical: 12.0),
@@ -59,14 +57,14 @@ class _CommentsPageState extends State<CommentsPage> {
                                     crossAxisAlignment: CrossAxisAlignment.start,
                                     children: [
                                       CircleAvatar(
-                                        radius: 20,
-                                        backgroundColor: Colors.black45,
+                                        radius: 25,
+                                        backgroundColor: Color(0xFF57DC90),
                                       ),
                                       SizedBox(width: 5,),
                                       Expanded(
                                         child: Container(
                                           alignment: Alignment.centerLeft,
-                                          padding: const EdgeInsets.only(top: 12),
+                                          padding: const EdgeInsets.only(top: 14),
                                           child: Text(
                                             comment.username,
                                             style: TextStyle(fontWeight: FontWeight.bold, fontSize: 16),
@@ -85,10 +83,10 @@ class _CommentsPageState extends State<CommentsPage> {
                                   ),
                                   SizedBox(height: 4,),
                                   Row(
-                                    mainAxisAlignment: MainAxisAlignment.end,
-                                    children: [
-                                      Text(DateFormat("dd/MM/yy HH:mm").format(comment.created_at.toDate()), style: TextStyle(color: Colors.lightGreen, fontSize: 12),),
-                                    ]
+                                      mainAxisAlignment: MainAxisAlignment.end,
+                                      children: [
+                                        Text(DateFormat("dd/MM/yy").format(comment.created_at.toDate()), style: TextStyle(color: Colors.black45, fontSize: 12),),
+                                      ]
                                   ),
                                 ],
                               ),
@@ -104,13 +102,7 @@ class _CommentsPageState extends State<CommentsPage> {
             ],
           ),
         ),
-      ) : Row(
-        mainAxisAlignment: MainAxisAlignment.center,
-        children: [
-          SizedBox(height: MediaQuery.of(context).size.height/2 + 70),
-          const Loading()
-        ],
-      ),
+      ) : const Loading(),
     );
   }
 }
