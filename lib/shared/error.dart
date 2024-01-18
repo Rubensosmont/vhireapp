@@ -58,6 +58,9 @@ class CustomError {
       case 'user-not-found':
         message = "L'utilisateur n'a pas été trouvé.";
         break;
+      case 'object-not-found':
+        message = "L'URL de l'objet fourni est incorrect.";
+        break;
       default:
         message = msg;
     }

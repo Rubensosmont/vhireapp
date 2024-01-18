@@ -1,3 +1,4 @@
+import 'package:cloud_firestore/cloud_firestore.dart';
 import 'package:firebase_auth/firebase_auth.dart';
 import 'package:vhireapp/models/user.dart';
 import 'package:vhireapp/shared/error.dart';
@@ -54,6 +55,16 @@ class AuthService {
       return 'Lien de reinitialisation envoyé! Vérifiez vôtre mail.';
     } on FirebaseAuthException catch(e){
       return CustomError(e.code, e.message!);
+    }
+  }
+
+  // Check if email exists
+  static Future<bool> isEmailAlreadyRegistered(String email) async {
+    try {
+      QuerySnapshot querySnapshot = await FirebaseFirestore.instance.collection('users').where('email', isEqualTo: email.trim()).get();
+      return querySnapshot.docs.isNotEmpty;
+    } on FirebaseException catch(e) {
+      return false;
     }
   }
 }

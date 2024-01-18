@@ -2,7 +2,21 @@
 class Assets {
   Assets._();
 
-  static const String imagesVHireIconLite = 'assets/images/vhire.png';
+  static const String homeBus = 'assets/images/home/bus.png';
+  static const String homeCar = 'assets/images/home/car.png';
+  static const String homeMainCar = 'assets/images/home/main_car.png';
+  static const String homeMotorcycle = 'assets/images/home/motorcycle.png';
+  static const String homeTruck = 'assets/images/home/truck.png';
+  static const String homeVhirelogo = 'assets/images/home/vhirelogo.png';
+  static const String imagesBackground = 'assets/images/background.png';
+  static const String imagesDefault = 'assets/images/default.png';
+  static const String imagesDutro = 'assets/images/dutro.png';
+  static const String imagesLexus = 'assets/images/lexus.png';
+  static const String imagesMiniFond = 'assets/images/mini_fond.png';
+  static const String imagesScooter = 'assets/images/scooter.png';
+  static const String imagesSuzuki = 'assets/images/suzuki.png';
+  static const String imagesVhire = 'assets/images/vhire.png';
   static const String imagesVhirelogo = 'assets/images/vhirelogo.png';
+  static const String imagesVolvo = 'assets/images/volvo.png';
 
 }

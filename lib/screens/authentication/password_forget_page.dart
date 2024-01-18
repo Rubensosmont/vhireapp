@@ -59,11 +59,16 @@ class PasswordForgetPage extends StatelessWidget {
                 padding: const EdgeInsets.symmetric(horizontal: 25.0),
                 child: GestureDetector(
                   onTap: () async {
-                    dynamic result = await _auth.pwdReset(_emailController.text);
-                    if(result is CustomError) {
-                      textShown = result.message;
+                    bool emailExists = await AuthService.isEmailAlreadyRegistered(_emailController.text);
+                    if(!emailExists) {
+                      textShown = "Erreur: Assurez vous d'avoir accès à internet et d'avoir entré le bon email";
                     } else {
-                      textShown = result;
+                      dynamic result = await _auth.pwdReset(_emailController.text);
+                      if(result is CustomError) {
+                        textShown = result.message;
+                      } else {
+                        textShown = result;
+                      }
                     }
                     showDialog(context: context, builder: (BuildContext context) {
                       return AlertDialog(content: Text(textShown));
